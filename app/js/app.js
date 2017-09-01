@@ -28,8 +28,13 @@
 
     }]);
 
-    app.controller("calendarController", ["moment", "calendarConfig", "alert", 
-        function(moment, alert, calendarConfig) {
+    app.constant("api", {
+        eventReceiver: "api/eventReceiver"
+    });
+
+
+    app.controller("calendarController", ["moment", "calendarConfig", "alert", "$http", "api", 
+        function(moment, alert, calendarConfig, $http, api) {
             moment.locale("es");
 
             var vm = this;
@@ -66,7 +71,7 @@
     
             vm.addEvent = function () {
                 vm.events.push ({
-                    title: "New event", 
+                    title: "Nuevo evento", 
                     startsAt: moment().startOf("day").toDate(),
                     endsAt: moment().endOf("day").toDate(),
                     color: {
@@ -100,8 +105,7 @@
                 event[field] = !event[field];
             };
     
-            vm.timespanClicked = function(date, cell) {
-    
+            vm.timespanClicked = function(date, cell) {    
                 if (vm.calendarView === "month") {
                     if ((vm.cellIsOpen && moment(date).startOf("day").isSame(moment(vm.viewDate).startOf("day"))) || cell.events.length === 0 || !cell.inMonth) {
                         vm.cellIsOpen = false;
@@ -118,6 +122,19 @@
                     }
                 }
             }
+
+            vm.saveEvent = function (event, callback) {
+                console.log(event);
+                $http.post(api.eventReceiver, { event })
+                    .then(
+                        function succesCallback(response) {
+                            //do something
+                        },
+                        function errorCallback(response){
+                            //do something else
+                        });   
+            }
+
         }])    
 
 })();

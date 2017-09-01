@@ -41,11 +41,11 @@ html
 				thead
 					tr
 						th Título
-						th Color primario
-						th Color secundario
+						th Colores
 						th Comienza en
 						th Termina en
 						th Remover
+						th Guardar
 
 				tbody
 					tr(ng-repeat="event in vm.events track by $index")
@@ -53,7 +53,6 @@ html
 							input(type="text" class="form-control" ng-model="event.title")
 						td 
 							input(class="form-control" colorpicker type="text" ng-model="event.color.primary")
-						td
 							input(class="form-control" colorpicker type="text" ng-model="event.color.secundary")
 						td
 							p(class="input-group" style="max-width: 250px")
@@ -63,4 +62,13 @@ html
 										i(class="glyphicon glyphicon-calendar")
 							div(uib-timepicker ng-model="event.startsAt" hour-step="1" monute-step="15" show-meridian="true")
 						td
+							p(class="input-group" style="max-width: 250px")
+								input(type="text" class="form-control" readonly uib-datepicker-popup="dd mm yyyy" ng-model="event.endsAt" is-open="event.endOpen" close-text="Cerrar")
+								span(class="input-group.btn")
+									button(type="button" class="btn btn-default" ng-click="vm.toggle($event, 'endOpen', event)")
+										i(class="glyphicon glyphicon-calendar")
+							div(uib-timepicker ng-model="event.endsAt" hour-step="1" monute-step="15" show-meridian="true")
+						td
 							button(class="btn btn-danger" ng-click="vm.events.splice($index, 1)") Borrar
+						td
+							button(class="btn btn-primary" ng-click="vm.saveEvent(event)") Guardar

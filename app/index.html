@@ -54,11 +54,11 @@
         <thead>
           <tr>
             <th>Título</th>
-            <th>Color primario</th>
-            <th>Color secundario</th>
+            <th>Colores</th>
             <th>Comienza en</th>
             <th>Termina en</th>
             <th>Remover</th>
+            <th>Guardar</th>
           </tr>
         </thead>
         <tbody>
@@ -68,8 +68,6 @@
             </td>
             <td> 
               <input class="form-control" colorpicker type="text" ng-model="event.color.primary">
-            </td>
-            <td>
               <input class="form-control" colorpicker type="text" ng-model="event.color.secundary">
             </td>
             <td>
@@ -80,7 +78,17 @@
               <div uib-timepicker ng-model="event.startsAt" hour-step="1" monute-step="15" show-meridian="true"></div>
             </td>
             <td>
+              <p class="input-group" style="max-width: 250px;">
+                <input class="form-control" type="text" readonly uib-datepicker-popup="dd mm yyyy" ng-model="event.endsAt" is-open="event.endOpen" close-text="Cerrar"><span class="input-group.btn">
+                  <button class="btn btn-default" type="button" ng-click="vm.toggle($event, 'endOpen', event)"><i class="glyphicon glyphicon-calendar"></i></button></span>
+              </p>
+              <div uib-timepicker ng-model="event.endsAt" hour-step="1" monute-step="15" show-meridian="true"></div>
+            </td>
+            <td>
               <button class="btn btn-danger" ng-click="vm.events.splice($index, 1)">Borrar</button>
+            </td>
+            <td>
+              <button class="btn btn-primary" ng-click="vm.saveEvent(event)">Guardar</button>
             </td>
           </tr>
         </tbody>
