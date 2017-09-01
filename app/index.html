@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calendario</title>
+    <meta charset="UTF8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/foreignjs/angular.min.js" type="text/javascript"></script>
+    <script src="js/foreignjs/angular-animate.min.js" type="text/javascript"></script>
+    <script src="js/foreignjs/angular-touch.min.js" type="text/javascript"></script>
+    <script src="js/foreignjs/moment-with-locales.min.js" type="text/javascript"></script>
+    <script src="js/foreignjs/interact.min.js" type="text/javascript"></script>
+    <script src="js/foreignjs/ui-bootstrap.js" type="text/javascript"></script>
+    <script src="js/foreignjs/ui-bootstrap-tpls.js" type="text/javascript"></script>
+    <script src="js/foreignjs/rrule.js" type="text/javascript"></script>
+    <script src="js/foreignjs/bootstrap-colorpicker-module.min.js" type="text/javascript"></script>
+    <script src="js/foreignjs/angular-bootstrap-calendar.min.js" type="text/javascript"></script>
+    <script src="js/foreignjs/angular-bootstrap-calendar-tpls.min.js" type="text/javascript"></script>
+    <!-- build:js js/main.min.js-->
+    <script src="js/app.js" type="text/javascript"></script>
+    <!-- endbuild -->
+    <!-- build:css css/styles.min.css -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- endbuild-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/colorpicker.min.css">
+    <link rel="stylesheet" href="css/angular-bootstrap-calendar.min.css">
+  </head>
+  <body ng-app="mainApp" ng-controller="calendarController as vm">
+    <div class="body">
+      <h2 class="text-center">{{vm.calendarTitle}}</h2>
+      <div class="row">
+        <div class="col-md-6 text-center">
+          <div class="btn-group">
+            <button class="btn btn-primary" mwl-date-modifier date="vm.viewDate" decrement="vm.calendarView" ng-click="vm.cellIsOpen = false">Anterior</button>
+            <button class="btn btn-default" mwl-date-modifier date="vm.viewDate" set-to-today ng-click="vm.cellIsOpen = false">Hoy</button>
+            <button class="btn btn-primary" mwl-date-modifier date="vm.viewDate" increment="vm.calendarView" ng-click="vm.cellIsOpen = false">Siguiente</button>
+          </div>
+        </div><br class="visible-xs visible-sm">
+        <div class="col-md-6 text-center">
+          <div class="btn-group">
+            <label class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'year'" ng-click="vm.cellIsOpen = false">Año</label>
+            <label class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'month'" ng-click="vm.cellIsOpen = false">Mes</label>
+            <label class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'week'" ng-click="vm.cellIsOpen = false">Semana</label>
+            <label class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'day'" ng-click="vm.cellIsOpen = false">Día</label>
+          </div>
+        </div>
+      </div><br>
+      <mwl-calendar events="vm.events" view="vm.calendarView" view-title="vm.calendarTitle" view-date="vm.viewDate" on-event-click="vm.eventClicked(calendarEvent)" on-event-times-changed="vm-eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd" cell-is-open="vm.cellIsOpen" day-view-start="06:00" day-view-end="22:59" day-view-split="30" cell-modifier="vm.modifyCell(calendarCell)" cell-auto-open-disable="true" on-time-click="vm.timespanClicked(calendarDate, calendarCell)"></mwl-calendar><br><br><br>
+      <h3 id="event-editor">Editar eventos
+        <button class="btn btn-primary pull-right" ng-click="vm.addEvent()">Agregar nuevo</button>
+        <div class="clearfix"></div>
+      </h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Color primario</th>
+            <th>Color secundario</th>
+            <th>Comienza en</th>
+            <th>Termina en</th>
+            <th>Remover</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="event in vm.events track by $index">
+            <td>
+              <input class="form-control" type="text" ng-model="event.title">
+            </td>
+            <td> 
+              <input class="form-control" colorpicker type="text" ng-model="event.color.primary">
+            </td>
+            <td>
+              <input class="form-control" colorpicker type="text" ng-model="event.color.secundary">
+            </td>
+            <td>
+              <p class="input-group" style="max-width: 250px;">
+                <input class="form-control" type="text" readonly uib-datepicker-popup="dd mm yyyy" ng-model="event.startsAt" is-open="event.startOpen" close-text="Cerrar"><span class="input-group.btn">
+                  <button class="btn btn-default" type="button" ng-click="vm.toggle($event, 'startOpen', event)"><i class="glyphicon glyphicon-calendar"></i></button></span>
+              </p>
+              <div uib-timepicker ng-model="event.startsAt" hour-step="1" monute-step="15" show-meridian="true"></div>
+            </td>
+            <td>
+              <button class="btn btn-danger" ng-click="vm.events.splice($index, 1)">Borrar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

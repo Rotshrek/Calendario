@@ -1,0 +1,18 @@
+<br/>
+<div class="row">
+  <div class="col-md-6 text-center">
+    <div class="btn-group">
+      <button class="btn btn-primary" mwl-date-modifier="mwl-date-modifier" date="vm.viewDate" decrement="vm.calendarView">Anterior</button>
+      <button class="btn btn-default" mwl-date-modifier="mwl-date-modifier" date="vm.viewDate" set-to-today="set-to-today">Hoy</button>
+      <button class="btn btn-primary" mwl-date-modifier="mwl-date-modifier" date="vm.viewDate" increment="vm.calendarView">Siguiente</button>
+    </div>
+  </div><br class="visible-xs visible-sm"/>
+  <div class="col-md-6 text-center">
+    <div class="btn-group">
+      <label class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'year'">Año</label>
+      <label class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'month'">Mes</label>
+      <label class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'week'">Semana</label>
+      <label class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'day'">Día</label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+br
+div.row
+
+	div(class="col-md-6 text-center")
+		div(class="btn-group")
+
+			button(class="btn btn-primary" mwl-date-modifier date="vm.viewDate" decrement="vm.calendarView") Anterior
+			button(class="btn btn-default" mwl-date-modifier date="vm.viewDate" set-to-today) Hoy
+			button(class="btn btn-primary" mwl-date-modifier date="vm.viewDate" increment="vm.calendarView") Siguiente
+
+	br(class="visible-xs visible-sm")
+
+	div(class="col-md-6 text-center")
+		div.btn-group
+			label(class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'year'") Año
+			label(class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'month'") Mes
+			label(class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'week'") Semana
+			label(class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'day'") Día

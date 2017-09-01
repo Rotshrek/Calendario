@@ -1,0 +1,66 @@
+doctype html
+
+html
+	head
+		title Calendario
+		include head.pug
+	body(ng-app="mainApp" ng-controller="calendarController as vm")
+		div.body
+			h2.text-center {{vm.calendarTitle}}
+
+			div.row
+				div(class="col-md-6 text-center")
+					div.btn-group
+
+						button(class="btn btn-primary" mwl-date-modifier date="vm.viewDate" decrement="vm.calendarView" ng-click="vm.cellIsOpen = false") Anterior
+						button(class="btn btn-default" mwl-date-modifier date="vm.viewDate" set-to-today ng-click="vm.cellIsOpen = false") Hoy
+						button(class="btn btn-primary" mwl-date-modifier date="vm.viewDate" increment="vm.calendarView" ng-click="vm.cellIsOpen = false") Siguiente
+
+				br(class="visible-xs visible-sm")
+
+				div(class="col-md-6 text-center")
+					div.btn-group
+						label(class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'year'" ng-click="vm.cellIsOpen = false") Año
+						label(class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'month'" ng-click="vm.cellIsOpen = false") Mes
+						label(class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'week'" ng-click="vm.cellIsOpen = false") Semana
+						label(class="btn btn-primary" ng-model="vm.calendarView" uib-btn-radio="'day'" ng-click="vm.cellIsOpen = false") Día
+
+			br
+
+			mwl-calendar(events="vm.events" view="vm.calendarView" view-title="vm.calendarTitle" view-date="vm.viewDate" on-event-click="vm.eventClicked(calendarEvent)" on-event-times-changed="vm-eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd" cell-is-open="vm.cellIsOpen" day-view-start="06:00" day-view-end="22:59" day-view-split="30" cell-modifier="vm.modifyCell(calendarCell)" cell-auto-open-disable="true" on-time-click="vm.timespanClicked(calendarDate, calendarCell)")
+
+			br
+			br
+			br
+
+			h3#event-editor Editar eventos
+				button(class="btn btn-primary pull-right" ng-click="vm.addEvent()") Agregar nuevo
+				div.clearfix
+
+			table(class="table table-bordered")
+				thead
+					tr
+						th Título
+						th Color primario
+						th Color secundario
+						th Comienza en
+						th Termina en
+						th Remover
+
+				tbody
+					tr(ng-repeat="event in vm.events track by $index")
+						td
+							input(type="text" class="form-control" ng-model="event.title")
+						td 
+							input(class="form-control" colorpicker type="text" ng-model="event.color.primary")
+						td
+							input(class="form-control" colorpicker type="text" ng-model="event.color.secundary")
+						td
+							p(class="input-group" style="max-width: 250px")
+								input(type="text" class="form-control" readonly uib-datepicker-popup="dd mm yyyy" ng-model="event.startsAt" is-open="event.startOpen" close-text="Cerrar")
+								span(class="input-group.btn")
+									button(type="button" class="btn btn-default" ng-click="vm.toggle($event, 'startOpen', event)")
+										i(class="glyphicon glyphicon-calendar")
+							div(uib-timepicker ng-model="event.startsAt" hour-step="1" monute-step="15" show-meridian="true")
+						td
+							button(class="btn btn-danger" ng-click="vm.events.splice($index, 1)") Borrar
